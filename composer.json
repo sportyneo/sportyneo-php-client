@@ -1,0 +1,10 @@
+{
+  "name": "sportyneo/php-sdk",
+  "description": "SDK PHP Sportyneo",
+  "autoload": {
+    "psr-4": {
+      "Sportyneo\\SDK\\": "src/"
+    }
+  },
+  "require": {}
+}
