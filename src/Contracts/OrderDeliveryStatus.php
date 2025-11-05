@@ -52,7 +52,7 @@ enum OrderDeliveryStatus: int
     public static function validationRules(): array
     {
         return [
-            'required',
+            'sometimes',
             function ($attribute, $value, $fail) {
                 if (is_numeric($value) && ! self::tryFrom((int) $value)) {
                     $fail("La valeur de $attribute n'est pas un identifiant de statut de livraison valide.");
