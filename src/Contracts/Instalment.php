@@ -16,12 +16,12 @@ enum Instalment: int
     public function label(): string
     {
         return match ($this) {
-            self::OneTimeCard => '1XC',
-            self::OneTimeDebit => '1XD',
-            self::ThreeTimes => '3X',
-            self::FourTimes => '4X',
-            self::TenTimes => '10X',
-            self::TwelveTimes => '12X',
+            self::OneTimeCard => 'CB1XC',
+            self::OneTimeDebit => 'CB1XD',
+            self::ThreeTimes => 'CB3X',
+            self::FourTimes => 'CB4X',
+            self::TenTimes => 'CB10X',
+            self::TwelveTimes => 'CB12X',
         };
     }
 
@@ -61,12 +61,12 @@ enum Instalment: int
     public static function fromLabel(string $label): ?self
     {
         return match (strtoupper($label)) {
-            '1XC' => self::OneTimeCard,
-            '1XD' => self::OneTimeDebit,
-            '3X' => self::ThreeTimes,
-            '4X' => self::FourTimes,
-            '10X' => self::TenTimes,
-            '12X' => self::TwelveTimes,
+            'CB1XC' => self::OneTimeCard,
+            'CB1XD' => self::OneTimeDebit,
+            'CB3X' => self::ThreeTimes,
+            'CB4X' => self::FourTimes,
+            'CB10X' => self::TenTimes,
+            'CB12X' => self::TwelveTimes,
             default => null,
         };
     }
