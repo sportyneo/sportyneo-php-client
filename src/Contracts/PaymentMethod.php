@@ -14,12 +14,12 @@ enum PaymentMethod: int
     public function label(): string
     {
         return match ($this) {
-            self::ALMA => 'almapay',
-            self::FLOA => 'floapay',
-            self::STRIPE => 'stripe',
-            self::CB => 'cb',
-            self::CHECK => 'check',
-            self::ESPECE => 'cod',
+            self::ALMA => 'ALMAPAY',
+            self::FLOA => 'FLOAPAY',
+            self::STRIPE => 'STRIPE',
+            self::CB => 'CB',
+            self::CHECK => 'CHECK',
+            self::ESPECE => 'COD',
         };
     }
 
@@ -38,12 +38,12 @@ enum PaymentMethod: int
     public static function fromLabel(string $label): ?self
     {
         return match (strtoupper($label)) {
-            'almapay' => self::ALMA,
-            'floapay' => self::FLOA,
-            'stripe' => self::STRIPE,
-            'cb' => self::CB,
-            'check' => self::CHECK,
-            'cod' => self::ESPECE,
+            'ALMAPAY' => self::ALMA,
+            'FLOAPAY' => self::FLOA,
+            'STRIPE' => self::STRIPE,
+            'CB' => self::CB,
+            'CHECK' => self::CHECK,
+            'COD' => self::ESPECE,
             default => null,
         };
     }
