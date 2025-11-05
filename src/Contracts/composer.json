@@ -1,12 +1,13 @@
 {
   "name": "sportyneo/sdk-contracts",
   "description": "Contrats pour le SDK Sportyneo",
+  "type": "library",
   "autoload": {
     "psr-4": {
-      "Sportyneo\\SDK\\Contracts\\": "./"
+      "Sportyneo\\SDK\\Contracts\\": ""
     }
   },
   "require": {
-    "php": "^8.3"
+    "php": "^8.2"
   }
 }
