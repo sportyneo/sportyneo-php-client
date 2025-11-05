@@ -11,5 +11,11 @@
   },
   "replace": {
     "sportyneo/sdk-contracts": "self.version"
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://gitlab.sportyneo.com/sportyneo/sportyneo-client-sdk.git",
+    }
+  ]
 }
