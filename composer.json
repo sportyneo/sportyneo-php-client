@@ -15,7 +15,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://gitlab.sportyneo.com/sportyneo/sportyneo-client-sdk.git",
+      "url": "https://gitlab.sportyneo.com/sportyneo/sportyneo-client-sdk.git"
     }
   ]
 }
