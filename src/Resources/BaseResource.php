@@ -2,7 +2,7 @@
 
 namespace Sportyneo\SDK\Resources;
 
-use Sportyneo\SDK\Client;
+use Sportyneo\SDK\Client\Client;
 
 /**
  * Base Resource class
