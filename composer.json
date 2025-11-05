@@ -6,5 +6,10 @@
       "Sportyneo\\SDK\\": "src/"
     }
   },
-  "require": {}
+  "require": {
+    "php": "^8.3"
+  },
+  "replace": {
+    "sportyneo/sdk-contracts": "self.version"
+  }
 }

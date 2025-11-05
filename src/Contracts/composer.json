@@ -1,0 +1,12 @@
+{
+  "name": "sportyneo/sdk-contracts",
+  "description": "Contrats pour le SDK Sportyneo",
+  "autoload": {
+    "psr-4": {
+      "Sportyneo\\SDK\\Contracts\\": "./"
+    }
+  },
+  "require": {
+    "php": "^8.3"
+  }
+}

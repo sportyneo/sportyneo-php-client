@@ -7,6 +7,7 @@ use Sportyneo\SDK\Exceptions\AuthenticationException;
 use Sportyneo\SDK\Exceptions\ValidationException;
 use Sportyneo\SDK\Exceptions\NotFoundException;
 use Sportyneo\SDK\Resources\EntityResource;
+use Sportyneo\SDK\Resources\PaymentResource;
 use Sportyneo\SDK\Resources\ShopResource;
 use Sportyneo\SDK\Resources\CustomerResource;
 use Sportyneo\SDK\Resources\OrderResource;
@@ -109,6 +110,7 @@ class Client
         $this->users = new UserResource($this);
         $this->statistics = new StatisticResource($this);
         $this->shopStats = new ShopStatResource($this);
+        $this->payments = new PaymentResource($this);
     }
 
     /**
