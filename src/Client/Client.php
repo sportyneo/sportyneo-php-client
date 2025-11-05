@@ -66,6 +66,9 @@ class Client
     /** @var ShopStatResource */
     public $shopStats;
 
+    /** @var PaymentResource */
+    public $payments;
+
     /**
      * SportyneoClient constructor.
      *
