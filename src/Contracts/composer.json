@@ -9,5 +9,11 @@
   },
   "require": {
     "php": "^8.2"
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://gitlab.sportyneo.com/sportyneo/sportyneo-client-sdk.git"
+    }
+  ]
 }
