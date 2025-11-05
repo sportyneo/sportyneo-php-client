@@ -1,6 +1,6 @@
 <?php
 
-namespace Sportyneo\SDK;
+namespace Sportyneo\SDK\Client;
 
 use Sportyneo\SDK\Exceptions\ApiException;
 use Sportyneo\SDK\Exceptions\AuthenticationException;

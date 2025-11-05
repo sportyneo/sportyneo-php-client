@@ -1,6 +1,6 @@
 <?php
 
-namespace Sportyneo\SDK\Enums;
+namespace Sportyneo\SDK\Contracts;
 
 enum OrderStatus: int
 {

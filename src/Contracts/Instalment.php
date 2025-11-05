@@ -1,6 +1,6 @@
 <?php
 
-namespace Sportyneo\SDK\Enums;
+namespace Sportyneo\SDK\Contracts;
 
 use Illuminate\Validation\Rules\Enum as EnumRule;
 
