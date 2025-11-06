@@ -16,7 +16,7 @@ class CustomerResource extends BaseResource
      */
     public function findByEmail(string $email): ?array
     {
-        $result = $this->client->get($this->endpoint, ['mail' => $email]);
+        $result = $this->client->get($this->endpoint, ['email' => $email]);
         return $result['data'][0] ?? null;
     }
 
