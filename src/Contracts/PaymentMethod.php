@@ -110,15 +110,18 @@ enum PaymentMethod: int
         return null;
     }
 
-    public static function getLogo($value): string
+    public static function getLogo($value, $format = 'svg'): string
     {
+        if(!in_array($format, ['svg', 'png', 'jpeg', 'jpg', 'webp', 'gif']))
+            $format = 'svg';
+
         return match ($value) {
-            self::ALMA => 'alma.png',
-            self::FLOA => 'floa.png',
-            self::STRIPE => 'stripe.png',
-            self::CB => 'cb.png',
-            self::CHECK => 'check.png',
-            self::ESPECE => 'espece.png',
+            self::ALMA => 'alma.'.$format,
+            self::FLOA => 'floa.'.$format,
+            self::STRIPE => 'stripe.'.$format,
+            self::CB => 'cb.'.$format,
+            self::CHECK => 'check.'.$format,
+            self::ESPECE => 'espece.'.$format,
         };
     }
 }
