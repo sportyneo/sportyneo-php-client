@@ -2,7 +2,7 @@
 
 namespace Sportyneo\SDK\Contracts;
 
-enum ItemCategory: int
+enum OrderItemCategory: int
 {
     case LICENSES = 1;
     case STAGES = 2;
