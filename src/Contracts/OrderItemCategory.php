@@ -30,7 +30,7 @@ enum OrderItemCategory: int
         };
     }
 
-    public function fromSlug(string $slug): self
+    public static function fromSlug(string $slug): self
     {
         return match($slug) {
             'adhesion' => self::LICENSES,
