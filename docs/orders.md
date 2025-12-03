@@ -120,7 +120,9 @@ GET /api/orders?status=5&with_insurance=false
   "from": 1,
   "last_page": 10,
   "last_page_url": "http://api.example.com/orders?page=10",
-  "links": [...],
+  "links": [
+    "links"
+  ],
   "next_page_url": "http://api.example.com/orders?page=2",
   "path": "http://api.example.com/orders",
   "per_page": 15,
