@@ -30,6 +30,19 @@ enum OrderItemCategory: int
         };
     }
 
+    public function fromSlug(string $slug): self
+    {
+        return match($slug) {
+            'adhesion' => self::LICENSES,
+            'stages' => self::STAGES,
+            'autres' => self::AUTRES,
+            'boutique' => self::BOUTIQUE,
+            'planning' => self::PLANNING,
+            'merchandising' => self::MERCHANDISING,
+            default => throw new \ValueError("Invalid slug: {$slug}"),
+        };
+    }
+
     public static function getSelectArray(): array
     {
         $result = [];
