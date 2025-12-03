@@ -18,7 +18,7 @@ enum OrderItemCategory: int
         };
     }
 
-    public function getLabel(): string
+    public function label(): string
     {
         return match($this) {
             self::LICENSES => 'Adhésions',
@@ -28,5 +28,15 @@ enum OrderItemCategory: int
             self::PLANNING => 'Planning',
             self::MERCHANDISING => 'Merchandising',
         };
+    }
+
+    public static function getSelectArray(): array
+    {
+        $result = [];
+        foreach (self::cases() as $case) {
+            $result[$case->value] = $case->label();
+        }
+
+        return $result;
     }
 }

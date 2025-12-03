@@ -87,4 +87,14 @@ enum OrderItemType: int
             self::cases()
         );
     }
+
+    public static function getSelectArray(): array
+    {
+        $result = [];
+        foreach (self::cases() as $case) {
+            $result[$case->value] = $case->label();
+        }
+
+        return $result;
+    }
 }
