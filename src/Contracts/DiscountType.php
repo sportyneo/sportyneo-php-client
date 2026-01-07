@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Sportyneo\SDK\Contracts;
 
-enum OrderItemType: int
+enum DiscountType: int
 {
-
     case LOCAL = 1;
     case REGION = 2;
     case NATION = 3;
