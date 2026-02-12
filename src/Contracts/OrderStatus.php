@@ -12,6 +12,7 @@ enum OrderStatus: int
     case Reimbursed = 6;
     case Issued = 7;
     case Saved = 8;
+    case PartiallyPaid = 9;
 
     public function label(): string
     {
@@ -19,6 +20,7 @@ enum OrderStatus: int
             self::Cart => 'Cart',
             self::Pending => 'Pending',
             self::Paid => 'Paid',
+            self::PartiallyPaid => 'PartiallyPaid',
             self::Cancelled => 'Cancelled',
             self::Failed => 'Failed',
             self::Reimbursed => 'Reimbursed',
@@ -33,6 +35,7 @@ enum OrderStatus: int
             'Cart' => self::Cart,
             'Pending' => self::Pending,
             'Paid' => self::Paid,
+            'PartiallyPaid' => self::PartiallyPaid,
             'Cancelled' => self::Cancelled,
             'Failed' => self::Failed,
             'Reimbursed' => self::Reimbursed,
