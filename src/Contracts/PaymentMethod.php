@@ -9,7 +9,7 @@ enum PaymentMethod: int
     case STRIPE = 3;
     case CB = 4;
     case CHECK = 5;
-    case ESPECE = 6;
+    case CASH = 6;
 
     public function label(): string
     {
@@ -19,7 +19,7 @@ enum PaymentMethod: int
             self::STRIPE => 'STRIPE',
             self::CB => 'CB',
             self::CHECK => 'CHECK',
-            self::ESPECE => 'COD',
+            self::CASH => 'COD',
         };
     }
 
@@ -31,7 +31,7 @@ enum PaymentMethod: int
             self::STRIPE => 'Stripe',
             self::CB => 'Carte Bancaire',
             self::CHECK => 'Chèque',
-            self::ESPECE => 'Espèces',
+            self::CASH => 'Espèces',
         };
     }
 
@@ -43,7 +43,7 @@ enum PaymentMethod: int
             'STRIPE' => self::STRIPE,
             'CB' => self::CB,
             'CHECK' => self::CHECK,
-            'COD' => self::ESPECE,
+            'COD' => self::CASH,
             default => null,
         };
     }
@@ -77,7 +77,7 @@ enum PaymentMethod: int
 
     public function isPhysical(): bool
     {
-        return in_array($this, [self::CHECK, self::ESPECE]);
+        return in_array($this, [self::CHECK, self::CASH]);
     }
 
     public static function validationRules(): array
@@ -121,7 +121,7 @@ enum PaymentMethod: int
             self::STRIPE => 'stripe.'.$format,
             self::CB => 'cb.'.$format,
             self::CHECK => 'check.'.$format,
-            self::ESPECE => 'espece.'.$format,
+            self::CASH => 'cash.'.$format,
         };
     }
 }
