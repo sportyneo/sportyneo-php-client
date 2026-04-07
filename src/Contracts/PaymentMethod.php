@@ -10,6 +10,7 @@ enum PaymentMethod: int
     case CB = 4;
     case CHECK = 5;
     case CASH = 6;
+    case RYFT = 7;
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum PaymentMethod: int
             self::CB => 'CB',
             self::CHECK => 'CHECK',
             self::CASH => 'COD',
+            self::RYFT => 'RYFT',
         };
     }
 
@@ -32,6 +34,7 @@ enum PaymentMethod: int
             self::CB => 'Carte Bancaire',
             self::CHECK => 'Chèque',
             self::CASH => 'Espèces',
+            self::RYFT => 'Ryft',
         };
     }
 
@@ -44,6 +47,7 @@ enum PaymentMethod: int
             'CB' => self::CB,
             'CHECK' => self::CHECK,
             'COD' => self::CASH,
+            'RYFT' => self::RYFT,
             default => null,
         };
     }
@@ -72,7 +76,7 @@ enum PaymentMethod: int
 
     public function isOnline(): bool
     {
-        return in_array($this, [self::ALMA, self::FLOA, self::STRIPE, self::CB]);
+        return in_array($this, [self::ALMA, self::FLOA, self::STRIPE, self::CB, self::RYFT]);
     }
 
     public function isPhysical(): bool
@@ -122,6 +126,7 @@ enum PaymentMethod: int
             self::CB => 'cb.'.$format,
             self::CHECK => 'check.'.$format,
             self::CASH => 'cash.'.$format,
+            self::RYFT => 'ryft.'.$format,
         };
     }
 }
