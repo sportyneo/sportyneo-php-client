@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace Sportyneo\SDK\Contracts;
 
 enum Psp: string
 {
