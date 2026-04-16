@@ -31,6 +31,43 @@ class ShopResource extends BaseResource
     }
 
     /**
+     * Upload un document de vérification KYB pour le compte PSP Ryft du shop.
+     * Retourne un file_id à utiliser dans updatePspAccount().
+     *
+     * @param int    $shopId    Identifiant du shop
+     * @param string $filePath  Chemin absolu vers le fichier local (pdf, jpg, jpeg, png — max 10 Mo)
+     * @param string $category  Catégorie Ryft : "ProofOfIdentity", "ProofOfAddress", "IncorporationDocument", etc.
+     * @return array { file_id, category }
+     */
+    public function uploadPspDocument(int $shopId, string $filePath, string $category): array
+    {
+        return $this->client->postFile(
+            $this->endpoint.'/'.$shopId.'/psp/documents/upload',
+            $filePath,
+            ['category' => $category]
+        );
+    }
+
+    /**
+     * Met à jour les documents KYB du sub account Ryft.
+     * Les file_id sont obtenus via uploadPspDocument().
+     *
+     * @param int    $shopId     Identifiant du shop
+     * @param array  $data
+     *   - entity_type  string  "Business" ou "Individual"
+     *   - documents    array   Liste de documents :
+     *     - type       string  Ex: "BankStatement", "Passport", "DriversLicense"
+     *     - category   string  Ex: "ProofOfIdentity", "ProofOfAddress"
+     *     - front      string  file_id recto
+     *     - back       string  file_id verso (optionnel)
+     * @return array { message }
+     */
+    public function updatePspAccount(int $shopId, array $data): array
+    {
+        return $this->client->patch($this->endpoint.'/'.$shopId.'/psp/account', $data);
+    }
+
+    /**
      * Crée le compte PSP Ryft pour un shop via onboarding NonHosted (full API).
      * Doit être appelé après la création du shop.
      *

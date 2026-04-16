@@ -192,6 +192,20 @@ class Client
     }
 
     /**
+     * Execute HTTP PATCH request
+     *
+     * @param string $endpoint
+     * @param array $data
+     * @return array
+     * @throws ApiException
+     */
+    public function patch(string $endpoint, array $data = []): array
+    {
+        $url = $this->baseUrl . '/api/v1' . $endpoint;
+        return $this->request('PATCH', $url, $data);
+    }
+
+    /**
      * Execute HTTP DELETE request
      *
      * @param string $endpoint
@@ -202,6 +216,52 @@ class Client
     {
         $url = $this->baseUrl . '/api/v1' . $endpoint;
         return $this->request('DELETE', $url);
+    }
+
+    /**
+     * Upload a file via multipart/form-data POST
+     *
+     * @param string $endpoint
+     * @param string $filePath   Absolute path to the local file
+     * @param array  $fields     Additional form fields
+     * @return array
+     * @throws ApiException
+     */
+    public function postFile(string $endpoint, string $filePath, array $fields = []): array
+    {
+        $url = $this->baseUrl . '/api/v1' . $endpoint;
+
+        $ch = curl_init();
+
+        $postFields = $fields;
+        $postFields['file'] = new \CURLFile($filePath);
+
+        $headers = array_values(array_filter(
+            $this->headers,
+            fn ($h) => !str_starts_with($h, 'Content-Type')
+        ));
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+
+        if ($this->debug) {
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+        }
+
+        $response  = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error     = curl_error($ch);
+        curl_close($ch);
+
+        if ($error) {
+            throw new ApiException('cURL Error: ' . $error);
+        }
+
+        return $this->handleResponse($response, $statusCode);
     }
 
     /**
