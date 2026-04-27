@@ -13,6 +13,8 @@ Liste les shops de votre entité.
 | Paramètre query | Type | Requis | Description |
 |-----------------|------|:------:|-------------|
 | `external_id` | integer | ❌ | Filtrer par identifiant externe |
+| `start_date` | date | ❌ | Début de période pour les statistiques agrégées (YYYY-MM-DD) |
+| `end_date` | date | ❌ | Fin de période pour les statistiques agrégées (YYYY-MM-DD) |
 
 **Réponse (200 OK) :**
 
@@ -109,3 +111,24 @@ curl -X POST https://api.sportyneo.com/api/v1/shops \
   "updated_at": "2026-01-20T14:30:00.000000Z"
 }
 ```
+
+---
+
+## Onboarding PSP (Ryft)
+
+Chaque shop peut être associé à un sub-account Ryft pour recevoir des virements. Le shop expose un tableau `psp_accounts` dans sa réponse GET avec le statut d'onboarding courant.
+
+```json
+{
+    "id": 3,
+    "psp_accounts": [
+        {
+            "psp": "ryft",
+            "account_id": "acct_xxxx",
+            "onboarding_status": "verified"
+        }
+    ]
+}
+```
+
+> Pour le processus complet d'onboarding, voir [psp.md](psp.md).

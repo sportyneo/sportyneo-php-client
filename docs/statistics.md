@@ -119,30 +119,47 @@ Statistiques journalières par shop (mêmes paramètres et champs, avec un champ
 
 ---
 
-## Shops inactifs
+## Activité des shops
 
-### GET /v1/statistics-shops/inactive-shops
+### GET /v1/statistics-shops/active-shops
 
-Shops sans commande depuis N jours.
+Shops ayant eu au moins une commande sur la période. Le nombre de shops inactifs = `total_shops - count`.
 
 | Paramètre query | Type | Requis | Description |
 |-----------------|------|:------:|-------------|
-| `days` | integer | ❌ | Seuil d'inactivité en jours (défaut : 30) |
+| `start_date` | date | ❌ | Date de début |
+| `end_date` | date | ❌ | Date de fin (défaut : aujourd'hui) |
 
 **Réponse (200 OK) :**
 
 ```json
 {
   "success": true,
-  "threshold_days": 30,
-  "count": 25,
+  "count": 42,
   "data": [
-    {
-      "id": 5,
-      "title": "Club Inactif",
-      "last_order_date": "2025-12-15"
-    }
+    { "id": 3, "title": "Club Olympique", "orders_count": 20 }
   ]
+}
+```
+
+### GET /v1/statistics-shops/churned-shops
+
+Shops ayant eu des commandes sur la même période l'année N-1, mais **aucune** commande cette année.
+
+| Paramètre query | Type | Requis | Description |
+|-----------------|------|:------:|-------------|
+| `start_date` | date | ✅ | Début de la période N (YYYY-MM-DD) |
+| `end_date` | date | ✅ | Fin de la période N (YYYY-MM-DD) |
+
+**Réponse (200 OK) :**
+
+```json
+{
+  "success": true,
+  "period_n":  { "start": "2024-01-01", "end": "2024-06-30" },
+  "period_n1": { "start": "2023-01-01", "end": "2023-06-30" },
+  "count": 3,
+  "data": [{ "id": 5, "title": "Club Inactif" }]
 }
 ```
 
@@ -186,6 +203,27 @@ Répartition géographique des shops (mêmes paramètres).
   "data": [
     { "region": "Île-de-France", "count": 200 },
     { "region": "Auvergne-Rhône-Alpes", "count": 120 }
+  ]
+}
+```
+
+### GET /v1/statistics-shops/distribution/by-product-type
+
+Volumes de transactions par type de produit (Adhésions, Stages, Boutique, etc.).
+
+| Paramètre query | Type | Requis | Description |
+|-----------------|------|:------:|-------------|
+| `start_date` | date | ❌ | Date de début |
+| `end_date` | date | ❌ | Date de fin (défaut : aujourd'hui) |
+
+**Réponse (200 OK) :**
+
+```json
+{
+  "success": true,
+  "data": [
+    { "type": "membership", "amount": 500000, "count": 40 },
+    { "type": "training",   "amount": 120000, "count": 8 }
   ]
 }
 ```

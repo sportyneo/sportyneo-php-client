@@ -20,10 +20,13 @@ Cette API REST permet de gérer les entités, clubs, clients, commandes, session
 | [configuration.md](configuration.md) | Énumérations et endpoint de configuration |
 | [entities.md](entities.md) | Gestion des entités |
 | [shops.md](shops.md) | Gestion des shops (clubs) |
+| [psp.md](psp.md) | Onboarding PSP Ryft (KYB, documents, RIB) |
 | [customers.md](customers.md) | Gestion des clients |
 | [orders.md](orders.md) | Gestion des commandes |
 | [payments.md](payments.md) | Sessions de paiement |
+| [invitations.md](invitations.md) | Invitations utilisateurs |
 | [statistics.md](statistics.md) | Statistiques globales et par shop |
+| [cumulus.md](cumulus.md) | Virements hebdomadaires (cumulus) |
 | [sales-attests.md](sales-attests.md) | Attestations de ventes |
 | [users.md](users.md) | Gestion des utilisateurs |
 

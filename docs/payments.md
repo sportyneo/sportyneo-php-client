@@ -22,6 +22,7 @@ Génère un lien de paiement sécurisé.
 | `return_url` | url | ✅ | URL de retour après paiement réussi |
 | `error_url` | url | ✅ | URL de retour après échec |
 | `back_url` | url | ✅ | URL de retour si abandon |
+| `allowed_institutions` | string[] | ✅ | Institutions de remise autorisées (voir [DiscountInstitution](#institutions-de-remise)) |
 | `external_id` | string | ❌ | Identifiant externe |
 
 ### Structure d'un article (`items[]`)
@@ -94,6 +95,27 @@ curl -X POST https://api.sportyneo.com/api/v1/payments \
   "token": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "expires_at": "2026-02-11T14:30:00.000000Z"
 }
+```
+
+---
+
+## Institutions de remise
+
+Le champ `allowed_institutions` contrôle quelles institutions de remise (ex. Pass Sport) le client peut utiliser sur la page de paiement. Passez un tableau vide `[]` si aucune institution n'est applicable.
+
+| Valeur | Nom | Portée |
+|--------|-----|--------|
+| `pass_sport` | Pass Sport | National |
+| `pass_region` | Pass Région | Régional |
+| `pass_region_rhone_alpes` | Pass Région Rhône-Alpes | Régional |
+| `pass_commune` | Pass Commune | Local |
+
+```php
+// Exemple : autoriser Pass Sport et Pass Région
+'allowed_institutions' => ['pass_sport', 'pass_region'],
+
+// Exemple : aucune institution de remise
+'allowed_institutions' => [],
 ```
 
 ---
