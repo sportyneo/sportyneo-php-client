@@ -287,7 +287,7 @@ class Client
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 
         if ($data !== null && in_array($method, ['POST', 'PUT', 'PATCH'])) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->normalizeEnums($data)));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
 
         if ($this->debug) {
@@ -347,19 +347,6 @@ class Client
     public function getBaseUrl(): string
     {
         return $this->baseUrl;
-    }
-
-    private function normalizeEnums(array $data): array
-    {
-        foreach ($data as $key => $value) {
-            if ($value instanceof \UnitEnum) {
-                $data[$key] = $value instanceof \BackedEnum ? $value->value : $value->name;
-            } elseif (is_array($value)) {
-                $data[$key] = $this->normalizeEnums($value);
-            }
-        }
-
-        return $data;
     }
 
     /**
