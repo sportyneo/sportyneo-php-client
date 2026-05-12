@@ -21,7 +21,7 @@ enum OrderItemCategory: int
     public function label(): string
     {
         return match($this) {
-            self::LICENSES => 'Adhésions',
+            self::LICENSES => 'Licences',
             self::STAGES => 'Stages',
             self::AUTRES => 'Autres',
             self::BOUTIQUE => 'Boutique',
@@ -33,7 +33,7 @@ enum OrderItemCategory: int
     public static function fromSlug(string $slug): self
     {
         return match($slug) {
-            'adhesion' => self::LICENSES,
+            'licences' => self::LICENSES,
             'stages' => self::STAGES,
             'autres' => self::AUTRES,
             'boutique' => self::BOUTIQUE,
