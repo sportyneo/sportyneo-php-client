@@ -1,10 +1,10 @@
 # Documentation API SportyNeo
 
-Version 1.0 — Février 2026
+Version 2.0 — Mai 2026
 
 ## Introduction
 
-Cette API REST permet de gérer les entités, clubs, clients, commandes, sessions de paiement, attestations de ventes et statistiques du système. Elle utilise une authentification HTTP Basic Auth avec un identifiant d'entité personnalisé.
+Cette API REST permet de gérer les entités, clubs, clients, commandes, sessions de paiement, attestations de ventes et statistiques du système. Elle utilise une authentification par **token Bearer** avec un identifiant d'entité personnalisé.
 
 **URL de base :** `https://<domaine>/api/v1`
 
@@ -34,57 +34,89 @@ Cette API REST permet de gérer les entités, clubs, clients, commandes, session
 
 ## Authentification
 
-L'API utilise **HTTP Basic Authentication** (RFC 7617) avec un header supplémentaire pour identifier l'entité.
+L'API utilise des **tokens Bearer** (OAuth2-style). Le token est obtenu une fois lors de la connexion et inclus dans toutes les requêtes suivantes.
 
-### Identifiants
-
-Lors de la création de votre compte partenaire, vous recevrez :
-
-- Un **email** de connexion (identifiant)
-- Un **mot de passe** (secret client)
-
-### Header Authorization
-
-```
-Authorization: Basic base64(email:motdepasse)
-```
-
-### Exemple
-
-Pour `partenaire@exemple.com` / `MonSecret123` :
+### Étape 1 — Obtenir un token
 
 ```bash
-# base64("partenaire@exemple.com:MonSecret123") = cGFydGVuYWlyZUBleGVtcGxlLmNvbTpNb25TZWNyZXQxMjM=
+curl -X POST https://api.sportyneo.com/api/v1/auth/token \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{"email": "partenaire@exemple.com", "password": "MonSecret123"}'
+```
 
+Réponse :
+
+```json
+{
+  "token": "1|abc123def456...",
+  "entities": [
+    { "id": 1, "name": "Mon entité" }
+  ]
+}
+```
+
+Le token est valide **30 jours**. Conservez-le côté serveur — ne l'exposez pas côté client.
+
+### Étape 2 — Utiliser le token
+
+Incluez le token dans toutes les requêtes suivantes :
+
+```bash
 curl -X GET https://api.sportyneo.com/api/v1/shops \
-  -H 'Authorization: Basic cGFydGVuYWlyZUBleGVtcGxlLmNvbTpNb25TZWNyZXQxMjM=' \
+  -H 'Authorization: Bearer 1|abc123def456...' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Accept: application/json'
 ```
 
 ### Processus de vérification
 
-1. Présence et validité de l'en-tête `Authorization` avec le préfixe `Basic`
-2. Décodage Base64 et extraction de l'email et du mot de passe
-3. Vérification de la présence de l'en-tête `Sportyneo-Entity-Id`
-4. Recherche de l'utilisateur par email et vérification de son appartenance à l'entité
-5. Vérification du mot de passe (hachage bcrypt)
-6. Vérification que le compte n'est pas révoqué
+1. Présence et validité de l'en-tête `Authorization` avec le préfixe `Bearer`
+2. Vérification du token en base (table `personal_access_tokens`)
+3. Vérification de l'expiration du token
+4. Résolution de l'entité via `Sportyneo-Entity-Id` (ou première entité rattachée si absent)
+5. Vérification que le compte n'est pas révoqué
+
+### Révocation du token
+
+```bash
+curl -X DELETE https://api.sportyneo.com/api/v1/auth/token \
+  -H 'Authorization: Bearer 1|abc123def456...'
+```
 
 ### Codes d'erreur d'authentification
 
 | Code | Erreur | Description |
 |------|--------|-------------|
-| `401` | `missing_basic_header` | Header `Authorization` manquant ou sans préfixe `Basic` |
-| `401` | `invalid_basic_format` | Contenu Base64 invalide ou sans séparateur `:` |
-| `401` | `missing_entity_id` | Header `Sportyneo-Entity-Id` manquant |
-| `401` | `invalid_credentials` | Email/mot de passe incorrect ou compte révoqué |
+| `401` | `missing_authorization_header` | Header `Authorization` absent |
+| `401` | `missing_bearer_token` | Préfixe `Bearer` manquant |
+| `401` | `invalid_token` | Token inconnu ou utilisateur révoqué |
+| `401` | `token_expired` | Token expiré (re-appeler `POST /auth/token`) |
+| `401` | `invalid_entity_id` | Entité inconnue ou non rattachée au compte |
 
 En cas d'échec, le serveur retourne :
 
 ```
 HTTP/1.1 401 Unauthorized
-WWW-Authenticate: Basic realm="API", charset="UTF-8"
+WWW-Authenticate: Bearer realm="API"
+```
+
+### Utilisation via le SDK PHP
+
+L'authentification est gérée **automatiquement** par le SDK. Le constructeur appelle `POST /auth/token` et renouvelle le token si nécessaire :
+
+```php
+use Sportyneo\SDK\Client\Client;
+
+$client = new Client(
+    email: 'partenaire@exemple.com',
+    password: 'MonSecret123',
+    entityId: 1,
+    baseUrl: 'https://api.sportyneo.com'
+);
+
+// Toutes les requêtes suivantes utilisent automatiquement le Bearer token
+$shops = $client->shops->list();
 ```
 
 ---
@@ -93,11 +125,13 @@ WWW-Authenticate: Basic realm="API", charset="UTF-8"
 
 | Header | Obligatoire | Description | Exemple |
 |--------|:-----------:|-------------|---------|
-| `Authorization` | ✅ | Identifiants Basic Auth en Base64 | `Basic cGFydC4uLg==` |
-| `Sportyneo-Entity-Id` | ✅ | Identifiant numérique de votre entité | `1` |
+| `Authorization` | ✅ | Token Bearer | `Bearer 1|abc123...` |
+| `Sportyneo-Entity-Id` | ✅* | Identifiant numérique de votre entité | `1` |
 | `Content-Type` | ✅ (POST/PUT) | Type de contenu | `application/json` |
 | `Accept` | Recommandé | Format de réponse souhaité | `application/json` |
 | `Sportyneo-Cache` | ❌ | Contrôle du cache (`1` = activé, vide = désactivé) | `1` |
+
+> *Si `Sportyneo-Entity-Id` est absent, l'API utilise la première entité rattachée au compte.
 
 > **Cache :** Certaines réponses sont mises en cache côté serveur (30 min à 1 h). Pour forcer le rafraîchissement, envoyez `Sportyneo-Cache:` (vide) ou omettez l'en-tête.
 
@@ -144,10 +178,11 @@ Les endpoints de liste utilisent la pagination Laravel.
 |:----:|---------------|-------------|
 | `200` | OK | Requête traitée avec succès |
 | `201` | Created | Ressource créée avec succès |
-| `401` | Unauthorized | Authentification invalide ou absente |
+| `401` | Unauthorized | Token invalide, expiré ou absent |
 | `403` | Forbidden | Accès refusé (permissions insuffisantes) |
 | `404` | Not Found | Ressource introuvable ou accès non autorisé |
 | `422` | Unprocessable Entity | Erreurs de validation |
+| `429` | Too Many Requests | Trop de tentatives de connexion |
 
 ### Erreurs de validation (422)
 
@@ -169,7 +204,8 @@ Les endpoints de liste utilisent la pagination Laravel.
 - **Dates** : Format ISO 8601 (`YYYY-MM-DD` ou `YYYY-MM-DDTHH:MM:SS.000000Z`)
 - **Pagination** : Disponible sur tous les endpoints de liste
 - **Cache** : Contrôlable via l'en-tête `Sportyneo-Cache`
+- **Token** : Durée de vie 30 jours — à renouveler via `POST /auth/token`
 
 ---
 
-*Documentation mise à jour le 2026-02-10*
+*Documentation mise à jour le 2026-05-13*
