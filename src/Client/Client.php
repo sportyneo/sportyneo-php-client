@@ -37,6 +37,9 @@ class Client
     /** @var int */
     private $entityId;
 
+    /** @var string */
+    private $token;
+
     /** @var array */
     private $headers = [];
 
@@ -74,33 +77,87 @@ class Client
     public $invitations;
 
     /**
-     * SportyneoClient constructor.
-     *
-     * @param string $email User email for authentication
+     * @param string $email    User email for authentication
      * @param string $password User password for authentication
-     * @param int $entityId Entity ID
-     * @param string $baseUrl Base URL of the API (default: https://api.sportyneo.com)
+     * @param int    $entityId Entity ID
+     * @param string $baseUrl  Base URL of the API
+     * @throws AuthenticationException
+     * @throws ApiException
      */
     public function __construct(string $email, string $password, int $entityId, string $baseUrl = 'https://api.sportyneo.com')
     {
-        $this->email = $email;
+        $this->email    = $email;
         $this->password = $password;
         $this->entityId = $entityId;
-        $this->baseUrl = rtrim($baseUrl, '/');
+        $this->baseUrl  = rtrim($baseUrl, '/');
 
-        $this->setupHeaders();
+        $this->authenticate();
         $this->initializeResources();
     }
 
     /**
-     * Setup default headers for API requests
+     * Fetch a Bearer token from POST /api/v1/auth/token and rebuild headers.
+     *
+     * @throws AuthenticationException
+     * @throws ApiException
      */
-    private function setupHeaders(): void
+    private function authenticate(): void
+    {
+        $url = $this->baseUrl . '/api/v1/auth/token';
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => $this->timeout,
+            CURLOPT_CUSTOMREQUEST  => 'POST',
+            CURLOPT_POSTFIELDS     => json_encode([
+                'email'    => $this->email,
+                'password' => $this->password,
+            ]),
+            CURLOPT_HTTPHEADER => [
+                'Accept: application/json',
+                'Content-Type: application/json',
+            ],
+        ]);
+
+        if ($this->debug) {
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+        }
+
+        $body   = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error  = curl_error($ch);
+        curl_close($ch);
+
+        if ($error) {
+            throw new ApiException('cURL Error: ' . $error);
+        }
+
+        if ($status !== 200) {
+            $data = json_decode($body, true);
+            $msg  = $data['message'] ?? $data['error'] ?? 'Authentication failed';
+            throw new AuthenticationException($msg, $status);
+        }
+
+        $data = json_decode($body, true);
+
+        if (empty($data['token'])) {
+            throw new AuthenticationException('No token returned by authentication endpoint', 200);
+        }
+
+        $this->token = $data['token'];
+        $this->buildHeaders();
+    }
+
+    /**
+     * Rebuild the headers array with the current Bearer token.
+     */
+    private function buildHeaders(): void
     {
         $this->headers = [
             'Accept: application/json',
             'Content-Type: application/json',
-            'Authorization: Basic ' . base64_encode($this->email . ':' . $this->password),
+            'Authorization: Bearer ' . $this->token,
             'Sportyneo-Entity-Id: ' . $this->entityId,
         ];
     }
@@ -110,22 +167,19 @@ class Client
      */
     private function initializeResources(): void
     {
-        $this->entities = new EntityResource($this);
-        $this->shops = new ShopResource($this);
-        $this->customers = new CustomerResource($this);
-        $this->orders = new OrderResource($this);
-        $this->users = new UserResource($this);
+        $this->entities   = new EntityResource($this);
+        $this->shops      = new ShopResource($this);
+        $this->customers  = new CustomerResource($this);
+        $this->orders     = new OrderResource($this);
+        $this->users      = new UserResource($this);
         $this->statistics = new StatisticResource($this);
-        $this->shopStats = new ShopStatResource($this);
-        $this->payments     = new PaymentResource($this);
-        $this->invitations  = new InvitationResource($this);
+        $this->shopStats  = new ShopStatResource($this);
+        $this->payments   = new PaymentResource($this);
+        $this->invitations = new InvitationResource($this);
     }
 
     /**
      * Set request timeout in seconds
-     *
-     * @param int $timeout
-     * @return $this
      */
     public function setTimeout(int $timeout): self
     {
@@ -135,9 +189,6 @@ class Client
 
     /**
      * Enable debug mode
-     *
-     * @param bool $debug
-     * @return $this
      */
     public function setDebug(bool $debug): self
     {
@@ -148,9 +199,6 @@ class Client
     /**
      * Execute HTTP GET request
      *
-     * @param string $endpoint
-     * @param array $params
-     * @return array
      * @throws ApiException
      */
     public function get(string $endpoint, array $params = []): array
@@ -166,74 +214,127 @@ class Client
     /**
      * Execute HTTP POST request
      *
-     * @param string $endpoint
-     * @param array $data
-     * @return array
      * @throws ApiException
      */
     public function post(string $endpoint, array $data = []): array
     {
-        $url = $this->baseUrl . '/api/v1' . $endpoint;
-        return $this->request('POST', $url, $data);
+        return $this->request('POST', $this->baseUrl . '/api/v1' . $endpoint, $data);
     }
 
     /**
      * Execute HTTP PUT request
      *
-     * @param string $endpoint
-     * @param array $data
-     * @return array
      * @throws ApiException
      */
     public function put(string $endpoint, array $data = []): array
     {
-        $url = $this->baseUrl . '/api/v1' . $endpoint;
-        return $this->request('PUT', $url, $data);
+        return $this->request('PUT', $this->baseUrl . '/api/v1' . $endpoint, $data);
     }
 
     /**
      * Execute HTTP PATCH request
      *
-     * @param string $endpoint
-     * @param array $data
-     * @return array
      * @throws ApiException
      */
     public function patch(string $endpoint, array $data = []): array
     {
-        $url = $this->baseUrl . '/api/v1' . $endpoint;
-        return $this->request('PATCH', $url, $data);
+        return $this->request('PATCH', $this->baseUrl . '/api/v1' . $endpoint, $data);
     }
 
     /**
      * Execute HTTP DELETE request
      *
-     * @param string $endpoint
-     * @return array
      * @throws ApiException
      */
     public function delete(string $endpoint): array
     {
-        $url = $this->baseUrl . '/api/v1' . $endpoint;
-        return $this->request('DELETE', $url);
+        return $this->request('DELETE', $this->baseUrl . '/api/v1' . $endpoint);
     }
 
     /**
      * Upload a file via multipart/form-data POST
      *
-     * @param string $endpoint
-     * @param string $filePath   Absolute path to the local file
-     * @param array  $fields     Additional form fields
-     * @return array
      * @throws ApiException
      */
     public function postFile(string $endpoint, string $filePath, array $fields = []): array
     {
         $url = $this->baseUrl . '/api/v1' . $endpoint;
 
+        $result = $this->executeFileRequest($url, $filePath, $fields);
+
+        if ($result['status'] === 401) {
+            $this->authenticate();
+            $result = $this->executeFileRequest($url, $filePath, $fields);
+        }
+
+        return $this->handleResponse($result['body'], $result['status']);
+    }
+
+    /**
+     * Execute HTTP request using cURL, with one automatic re-auth retry on 401.
+     *
+     * @throws ApiException
+     * @throws AuthenticationException
+     * @throws ValidationException
+     * @throws NotFoundException
+     */
+    private function request(string $method, string $url, ?array $data = null): array
+    {
+        $result = $this->executeRequest($method, $url, $data);
+
+        if ($result['status'] === 401) {
+            $this->authenticate();
+            $result = $this->executeRequest($method, $url, $data);
+        }
+
+        return $this->handleResponse($result['body'], $result['status']);
+    }
+
+    /**
+     * Run a single cURL request and return raw status + body.
+     *
+     * @return array{status: int, body: string}
+     * @throws ApiException
+     */
+    private function executeRequest(string $method, string $url, ?array $data): array
+    {
         $ch = curl_init();
 
-        $postFields = $fields;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+
+        if ($data !== null && in_array($method, ['POST', 'PUT', 'PATCH'])) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+
+        if ($this->debug) {
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+        }
+
+        $body   = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error  = curl_error($ch);
+        curl_close($ch);
+
+        if ($error) {
+            throw new ApiException('cURL Error: ' . $error);
+        }
+
+        return ['status' => $status, 'body' => $body];
+    }
+
+    /**
+     * @return array{status: int, body: string}
+     * @throws ApiException
+     */
+    private function executeFileRequest(string $url, string $filePath, array $fields): array
+    {
+        $ch = curl_init();
+
+        $postFields         = $fields;
         $postFields['file'] = new \CURLFile($filePath);
 
         $headers = array_values(array_filter(
@@ -252,66 +353,21 @@ class Client
             curl_setopt($ch, CURLOPT_VERBOSE, true);
         }
 
-        $response  = curl_exec($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error     = curl_error($ch);
+        $body   = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error  = curl_error($ch);
         curl_close($ch);
 
         if ($error) {
             throw new ApiException('cURL Error: ' . $error);
         }
 
-        return $this->handleResponse($response, $statusCode);
-    }
-
-    /**
-     * Execute HTTP request using cURL
-     *
-     * @param string $method
-     * @param string $url
-     * @param array|null $data
-     * @return array
-     * @throws ApiException
-     * @throws AuthenticationException
-     * @throws ValidationException
-     * @throws NotFoundException
-     */
-    private function request(string $method, string $url, ?array $data = null): array
-    {
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-
-        if ($data !== null && in_array($method, ['POST', 'PUT', 'PATCH'])) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        }
-
-        if ($this->debug) {
-            curl_setopt($ch, CURLOPT_VERBOSE, true);
-        }
-
-        $response = curl_exec($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
-        curl_close($ch);
-
-        if ($error) {
-            throw new ApiException('cURL Error: ' . $error);
-        }
-
-        return $this->handleResponse($response, $statusCode);
+        return ['status' => $status, 'body' => $body];
     }
 
     /**
      * Handle API response and throw appropriate exceptions
      *
-     * @param string $response
-     * @param int $statusCode
-     * @return array
      * @throws ApiException
      * @throws AuthenticationException
      * @throws ValidationException
@@ -341,8 +397,6 @@ class Client
 
     /**
      * Get base URL
-     *
-     * @return string
      */
     public function getBaseUrl(): string
     {
@@ -351,8 +405,6 @@ class Client
 
     /**
      * Get entity ID
-     *
-     * @return int
      */
     public function getEntityId(): int
     {
