@@ -11,6 +11,7 @@ enum PaymentMethod: int
     case CHECK = 5;
     case CASH = 6;
     case RYFT = 7;
+    case BANK_TRANSFER = 8;
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum PaymentMethod: int
             self::CHECK => 'CHECK',
             self::CASH => 'COD',
             self::RYFT => 'RYFT',
+            self::BANK_TRANSFER => 'BANK_TRANSFER',
         };
     }
 
@@ -35,6 +37,7 @@ enum PaymentMethod: int
             self::CHECK => 'Chèque',
             self::CASH => 'Espèces',
             self::RYFT => 'Ryft',
+            self::BANK_TRANSFER => 'Virement bancaire',
         };
     }
 
@@ -48,6 +51,7 @@ enum PaymentMethod: int
             'CHECK' => self::CHECK,
             'COD' => self::CASH,
             'RYFT' => self::RYFT,
+            'BANK_TRANSFER' => self::BANK_TRANSFER,
             default => null,
         };
     }
@@ -80,6 +84,11 @@ enum PaymentMethod: int
     }
 
     public function isPhysical(): bool
+    {
+        return in_array($this, [self::CHECK, self::CASH, self::BANK_TRANSFER]);
+    }
+
+    public function isInPerson(): bool
     {
         return in_array($this, [self::CHECK, self::CASH]);
     }
@@ -127,6 +136,7 @@ enum PaymentMethod: int
             self::CHECK => 'check.'.$format,
             self::CASH => 'cash.'.$format,
             self::RYFT => 'ryft.'.$format,
+            self::BANK_TRANSFER => 'bank_transfer.'.$format,
         };
     }
 }
