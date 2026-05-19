@@ -104,4 +104,15 @@ class ShopResource extends BaseResource
     {
         return $this->client->post($this->endpoint.'/'.$shopId.'/psp/create', $data);
     }
+
+    /**
+     * Retourne les utilisateurs rattachés à un shop.
+     *
+     * @param int $shopId
+     * @return array { success, data: UserResource[] }
+     */
+    public function getUsers(int $shopId): array
+    {
+        return $this->client->get($this->endpoint.'/'.$shopId.'/users');
+    }
 }
