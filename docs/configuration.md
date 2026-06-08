@@ -12,7 +12,7 @@ Retourne toutes les énumérations utilisées par l'API.
 
 ```json
 {
-  "payment_methods": { "1": "ALMAPAY", "2": "FLOAPAY", "3": "STRIPE", "4": "CB", "5": "CHECK", "6": "COD" },
+  "payment_methods": { "1": "ALMAPAY", "2": "FLOAPAY", "3": "STRIPE", "4": "CB", "5": "CHECK", "6": "COD", "7": "RYFT", "8": "BANK_TRANSFER" },
   "instalments": { "1": "CB1XC", "2": "CB1XD", "3": "CB3X", "4": "CB4X", "10": "CB10X", "12": "CB12X" },
   "order_status": { "1": "CART", "2": "PENDING", "3": "PAID", "4": "CANCELLED", "5": "FAILED", "6": "REIMBURSED", "7": "ISSUED", "8": "SAVED" },
   "order_delivery_status": { "1": "PENDING", "2": "SHIPPED", "3": "DELIVERED" },
@@ -33,6 +33,23 @@ Retourne toutes les énumérations utilisées par l'API.
 | 4 | CB | Carte Bancaire | En ligne |
 | 5 | CHECK | Chèque | Physique |
 | 6 | COD | Espèces | Physique |
+| 7 | RYFT | Ryft | En ligne |
+| 8 | BANK_TRANSFER | Virement bancaire | Physique |
+
+> Ces valeurs (clé numérique) sont celles attendues par le champ `allowed_payment_methods` lors de la [création d'une session de paiement](payments.md#modes-de-paiement-autorisés).
+
+---
+
+## Institutions de remise (DiscountInstitution)
+
+Valeurs acceptées par le champ `allowed_institutions` lors de la [création d'une session de paiement](payments.md#institutions-de-remise). Chaque institution est identifiée par son **slug** (string).
+
+| Slug | Nom | Portée |
+|------|-----|--------|
+| `pass_commune` | Pass Commune | `local` |
+| `pass_region` | Pass Région | `regional` |
+| `pass_region_rhone_alpes` | Pass Région Rhône-Alpes | `regional` |
+| `pass_sport` | Pass Sport | `national` |
 
 ---
 

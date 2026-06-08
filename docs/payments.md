@@ -22,7 +22,8 @@ Génère un lien de paiement sécurisé.
 | `return_url` | url | ✅ | URL de retour après paiement réussi |
 | `error_url` | url | ✅ | URL de retour après échec |
 | `back_url` | url | ✅ | URL de retour si abandon |
-| `allowed_institutions` | string[] | ✅ | Institutions de remise autorisées (voir [DiscountInstitution](#institutions-de-remise)) |
+| `allowed_institutions` | string[] | ✅ | Institutions de remise autorisées — slugs [DiscountInstitution](configuration.md#institutions-de-remise-discountinstitution) (voir [détails](#institutions-de-remise)) |
+| `allowed_payment_methods` | integer[] | ❌ | Modes de paiement autorisés — valeurs [PaymentMethod](configuration.md#modes-de-paiement-paymentmethod) (voir [détails](#modes-de-paiement-autorisés)) |
 | `external_id` | string | ❌ | Identifiant externe |
 
 ### Structure d'un article (`items[]`)
@@ -101,14 +102,14 @@ curl -X POST https://api.sportyneo.com/api/v1/payments \
 
 ## Institutions de remise
 
-Le champ `allowed_institutions` contrôle quelles institutions de remise (ex. Pass Sport) le client peut utiliser sur la page de paiement. Passez un tableau vide `[]` si aucune institution n'est applicable.
+Le champ `allowed_institutions` contrôle quelles institutions de remise (ex. Pass Sport) le client peut utiliser sur la page de paiement. Chaque valeur est le **slug** d'une institution (enum [`DiscountInstitution`](configuration.md#institutions-de-remise-discountinstitution)). Passez un tableau vide `[]` si aucune institution n'est applicable.
 
-| Valeur | Nom | Portée |
-|--------|-----|--------|
-| `pass_sport` | Pass Sport | National |
+| Slug | Nom | Portée |
+|------|-----|--------|
+| `pass_commune` | Pass Commune | Local |
 | `pass_region` | Pass Région | Régional |
 | `pass_region_rhone_alpes` | Pass Région Rhône-Alpes | Régional |
-| `pass_commune` | Pass Commune | Local |
+| `pass_sport` | Pass Sport | National |
 
 ```php
 // Exemple : autoriser Pass Sport et Pass Région
@@ -117,6 +118,33 @@ Le champ `allowed_institutions` contrôle quelles institutions de remise (ex. Pa
 // Exemple : aucune institution de remise
 'allowed_institutions' => [],
 ```
+
+---
+
+## Modes de paiement autorisés
+
+Le champ optionnel `allowed_payment_methods` restreint les modes de paiement proposés au client sur la page de paiement. Chaque valeur est l'**identifiant numérique** d'un mode de paiement (enum [`PaymentMethod`](configuration.md#modes-de-paiement-paymentmethod)). Omettez le champ (ou passez un tableau vide `[]`) pour laisser disponibles tous les modes activés sur votre entité.
+
+| Valeur | Code API | Nom | Type |
+|:------:|----------|-----|------|
+| `1` | ALMAPAY | Alma | En ligne |
+| `2` | FLOAPAY | Floa | En ligne |
+| `3` | STRIPE | Stripe | En ligne |
+| `4` | CB | Carte Bancaire | En ligne |
+| `5` | CHECK | Chèque | Physique |
+| `6` | COD | Espèces | Physique |
+| `7` | RYFT | Ryft | En ligne |
+| `8` | BANK_TRANSFER | Virement bancaire | Physique |
+
+```php
+// Exemple : autoriser uniquement la carte bancaire et Alma
+'allowed_payment_methods' => [4, 1],
+
+// Exemple : aucune restriction (tous les modes activés sur l'entité)
+'allowed_payment_methods' => [],
+```
+
+> Seuls les modes effectivement activés sur votre entité (cf. [`workflow`](entities.md)) sont proposés ; `allowed_payment_methods` agit comme un filtre supplémentaire au sein de cet ensemble.
 
 ---
 

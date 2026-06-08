@@ -74,6 +74,8 @@ Accept: application/json
 | 4 | CB | Carte Bancaire | En ligne |
 | 5 | CHECK | Chèque | Physique |
 | 6 | COD | Espèces | Physique |
+| 7 | RYFT | Ryft | En ligne |
+| 8 | BANK_TRANSFER | Virement bancaire | Physique |
 
 #### OrderDeliveryStatus (Backed Enum: int)
 
