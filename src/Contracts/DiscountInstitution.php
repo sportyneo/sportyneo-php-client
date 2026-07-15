@@ -14,6 +14,7 @@ enum DiscountInstitution: string
     case PassRegion = 'pass_region';
     case PassRegionRhoneAlpes = 'pass_region_rhone_alpes';
     case PassSport = 'pass_sport';
+    case Ancv = 'ancv';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum DiscountInstitution: string
             self::PassRegion => 'Pass Région',
             self::PassRegionRhoneAlpes => 'Pass Région Rhône-Alpes',
             self::PassSport => 'Pass Sport',
+            self::Ancv => 'ANCV',
         };
     }
 
@@ -35,6 +37,7 @@ enum DiscountInstitution: string
             self::PassRegion => 'regional',
             self::PassRegionRhoneAlpes => 'regional',
             self::PassSport => 'national',
+            self::Ancv => 'national',
         };
     }
 
