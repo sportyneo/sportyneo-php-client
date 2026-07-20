@@ -78,7 +78,13 @@ class PaymentResource extends BaseResource
                 throw new ValidationException("Le champ 'items[{$index}].quantity' doit être au minimum 1");
             }
 
-            if ($item['unit_price'] < 0) {
+            // Les remises et coupons sont, par nature, des lignes négatives : elles
+            // réduisent le total et permettent à la somme des items de correspondre
+            // au montant transmis (cf. matérialisation côté marketplace). Seuls les
+            // items « positifs » (produit, assurance, frais, livraison, don…) ne
+            // peuvent pas être négatifs.
+            $negativeAllowed = in_array($item['type'], [OrderItemType::DISCOUNT, OrderItemType::COUPON], true);
+            if (!$negativeAllowed && $item['unit_price'] < 0) {
                 throw new ValidationException("Le champ 'items[{$index}].unit_price' ne peut pas être négatif");
             }
 
