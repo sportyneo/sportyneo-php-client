@@ -73,7 +73,7 @@ Crée un nouveau shop rattaché à votre entité.
 ### Exemple
 
 ```bash
-curl -X POST https://api.sportyneo.com/api/v1/shops \
+curl -X POST https://api.sportypay.eu/api/v1/shops \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Content-Type: application/json' \

@@ -21,7 +21,7 @@ use Sportyneo\SDK\Resources\ShopStatResource;
  *
  * @version 1.0.0
  * @author Sportyneo
- * @link https://api.sportyneo.com/
+ * @link https://api.sportypay.eu/
  */
 class Client
 {
@@ -84,7 +84,7 @@ class Client
      * @throws AuthenticationException
      * @throws ApiException
      */
-    public function __construct(string $email, string $password, int $entityId, string $baseUrl = 'https://api.sportyneo.com')
+    public function __construct(string $email, string $password, int $entityId, string $baseUrl = 'https://api.sportypay.eu')
     {
         $this->email    = $email;
         $this->password = $password;

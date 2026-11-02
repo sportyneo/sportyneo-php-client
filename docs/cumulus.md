@@ -35,8 +35,8 @@ $data = $client->get('/cumulus/entity/1/yearly', ['year' => 2024]);
             "transfer_week": 2,
             "amount": 125000,
             "is_persisted": true,
-            "download_xml_url": "https://api.sportyneo.com/api/v1/payouts/5/download/xml?signature=...",
-            "download_xls_url": "https://api.sportyneo.com/api/v1/payouts/5/download/xls?signature=..."
+            "download_xml_url": "https://api.sportypay.eu/api/v1/payouts/5/download/xml?signature=...",
+            "download_xls_url": "https://api.sportypay.eu/api/v1/payouts/5/download/xls?signature=..."
         },
         {
             "transfer_date": "2024-12-02",
@@ -71,7 +71,7 @@ Les URLs de téléchargement sont des **URLs signées** — elles expirent rapid
 Télécharge le fichier XML du virement.
 
 ```bash
-curl -o virement.xml "https://api.sportyneo.com/api/v1/payouts/5/download/xml?signature=..."
+curl -o virement.xml "https://api.sportypay.eu/api/v1/payouts/5/download/xml?signature=..."
 ```
 
 ### GET /v1/payouts/{payout_id}/download/xls
@@ -79,5 +79,5 @@ curl -o virement.xml "https://api.sportyneo.com/api/v1/payouts/5/download/xml?si
 Télécharge le fichier Excel du virement.
 
 ```bash
-curl -o virement.xlsx "https://api.sportyneo.com/api/v1/payouts/5/download/xls?signature=..."
+curl -o virement.xlsx "https://api.sportypay.eu/api/v1/payouts/5/download/xls?signature=..."
 ```

@@ -45,7 +45,7 @@ Génère un lien de paiement sécurisé.
 ### Exemple de requête
 
 ```bash
-curl -X POST https://api.sportyneo.com/api/v1/payments \
+curl -X POST https://api.sportypay.eu/api/v1/payments \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Content-Type: application/json' \

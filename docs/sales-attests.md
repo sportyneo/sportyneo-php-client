@@ -17,7 +17,7 @@ Génère l'attestation de ventes pour un shop à une date de transfert donnée.
 ### Exemple
 
 ```bash
-curl -X GET "https://api.sportyneo.com/api/v1/sales-attests/shop/1/generate?date=2026-02-09" \
+curl -X GET "https://api.sportypay.eu/api/v1/sales-attests/shop/1/generate?date=2026-02-09" \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Accept: application/json'
@@ -36,7 +36,7 @@ Toutes les attestations d'un shop pour une année.
 ### Exemple
 
 ```bash
-curl -X GET "https://api.sportyneo.com/api/v1/sales-attests/shop/1/yearly?year=2026" \
+curl -X GET "https://api.sportypay.eu/api/v1/sales-attests/shop/1/yearly?year=2026" \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Accept: application/json'
@@ -97,5 +97,5 @@ Télécharge le PDF de l'attestation.
 
 ```bash
 # L'URL signée est fournie dans download_url, utilisez-la directement
-curl -o attestation.pdf "https://api.sportyneo.com/api/v1/sales-attests/1/download?signature=..."
+curl -o attestation.pdf "https://api.sportypay.eu/api/v1/sales-attests/1/download?signature=..."
 ```

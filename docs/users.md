@@ -59,7 +59,7 @@ Crée un nouvel utilisateur.
 ### Exemple
 
 ```bash
-curl -X POST https://api.sportyneo.com/api/v1/users \
+curl -X POST https://api.sportypay.eu/api/v1/users \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Content-Type: application/json' \

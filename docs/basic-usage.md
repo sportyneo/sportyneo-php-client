@@ -8,6 +8,13 @@ Cette API REST permet de gérer les entités, clubs, clients, commandes, session
 
 **URL de base :** `https://<domaine>/api/v1`
 
+> **Changement d'URL de l'API.** L'API SportyPay est désormais servie sur les domaines `sportypay.eu`. Les anciens domaines `sportyneo.com` restent actifs pendant la migration, mais toute nouvelle intégration doit utiliser les nouvelles URL. Les intégrations existantes doivent remplacer leur URL de base dès que possible : la date de fin des anciens domaines sera communiquée à l'avance.
+>
+> | Environnement | URL | Ancienne URL (dépréciée) |
+> |---------------|-----|--------------------------|
+> | Production | `https://api.sportypay.eu` | `https://api.sportyneo.com` |
+> | Sandbox | `https://api.sandbox.sportypay.eu` | `https://sandbox-api.sportyneo.com` |
+
 > Tous les montants sont exprimés en **centimes d'euros** (integer). Exemple : `15000` = 150,00 €.
 
 ---
@@ -39,7 +46,7 @@ L'API utilise des **tokens Bearer** (OAuth2-style). Le token est obtenu une fois
 ### Étape 1 — Obtenir un token
 
 ```bash
-curl -X POST https://api.sportyneo.com/api/v1/auth/token \
+curl -X POST https://api.sportypay.eu/api/v1/auth/token \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json' \
   -d '{"email": "partenaire@exemple.com", "password": "MonSecret123"}'
@@ -63,7 +70,7 @@ Le token est valide **30 jours**. Conservez-le côté serveur — ne l'exposez p
 Incluez le token dans toutes les requêtes suivantes :
 
 ```bash
-curl -X GET https://api.sportyneo.com/api/v1/shops \
+curl -X GET https://api.sportypay.eu/api/v1/shops \
   -H 'Authorization: Bearer 1|abc123def456...' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Accept: application/json'
@@ -80,7 +87,7 @@ curl -X GET https://api.sportyneo.com/api/v1/shops \
 ### Révocation du token
 
 ```bash
-curl -X DELETE https://api.sportyneo.com/api/v1/auth/token \
+curl -X DELETE https://api.sportypay.eu/api/v1/auth/token \
   -H 'Authorization: Bearer 1|abc123def456...'
 ```
 
@@ -112,7 +119,7 @@ $client = new Client(
     email: 'partenaire@exemple.com',
     password: 'MonSecret123',
     entityId: 1,
-    baseUrl: 'https://api.sportyneo.com'
+    baseUrl: 'https://api.sportypay.eu'
 );
 
 // Toutes les requêtes suivantes utilisent automatiquement le Bearer token
@@ -154,10 +161,10 @@ Les endpoints de liste utilisent la pagination Laravel.
 {
   "data": [],
   "links": {
-    "first": "https://api.sportyneo.com/api/v1/resource?page=1",
-    "last": "https://api.sportyneo.com/api/v1/resource?page=5",
+    "first": "https://api.sportypay.eu/api/v1/resource?page=1",
+    "last": "https://api.sportypay.eu/api/v1/resource?page=5",
     "prev": null,
-    "next": "https://api.sportyneo.com/api/v1/resource?page=2"
+    "next": "https://api.sportypay.eu/api/v1/resource?page=2"
   },
   "meta": {
     "current_page": 1,

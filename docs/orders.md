@@ -139,10 +139,10 @@ GET /api/v1/orders?search_text=Dupont
     }
   ],
   "links": {
-    "first": "https://api.sportyneo.com/api/v1/orders?page=1",
-    "last": "https://api.sportyneo.com/api/v1/orders?page=10",
+    "first": "https://api.sportypay.eu/api/v1/orders?page=1",
+    "last": "https://api.sportypay.eu/api/v1/orders?page=10",
     "prev": null,
-    "next": "https://api.sportyneo.com/api/v1/orders?page=2"
+    "next": "https://api.sportypay.eu/api/v1/orders?page=2"
   },
   "meta": {
     "current_page": 1,
@@ -347,7 +347,7 @@ Crée une nouvelle commande.
 ### Exemple de requête
 
 ```bash
-curl -X POST https://api.sportyneo.com/api/v1/orders \
+curl -X POST https://api.sportypay.eu/api/v1/orders \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Content-Type: application/json' \
@@ -436,7 +436,7 @@ Mêmes champs que la création. La `reference` doit rester unique (à l'exclusio
 ### Exemple
 
 ```bash
-curl -X PUT https://api.sportyneo.com/api/v1/orders/42 \
+curl -X PUT https://api.sportypay.eu/api/v1/orders/42 \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Content-Type: application/json' \

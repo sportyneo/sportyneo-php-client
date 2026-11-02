@@ -57,6 +57,14 @@ composer require sportyneo/sdk
 
 ### Initialisation du client
 
+> **Changement d'URL de l'API.** L'API SportyPay est désormais servie sur les domaines `sportypay.eu`. Les anciens domaines `sportyneo.com` restent actifs pendant la migration, mais toute nouvelle intégration doit utiliser les nouvelles URL. Les intégrations existantes doivent remplacer leur URL de base dès que possible : la date de fin des anciens domaines sera communiquée à l'avance.
+>
+> | Environnement | URL | Ancienne URL (dépréciée) |
+> |---------------|-----|--------------------------|
+> | Production | `https://api.sportypay.eu` | `https://api.sportyneo.com` |
+> | Sandbox | `https://api.sandbox.sportypay.eu` | `https://sandbox-api.sportyneo.com` |
+
+
 ```php
 use Sportyneo\SDK\SportyneoClient;
 
@@ -64,7 +72,7 @@ $client = new SportyneoClient(
     email: 'your-email@example.com',
     password: 'your-password',
     entityId: 123,
-    baseUrl: 'https://api.sportyneo.com' // Optionnel
+    baseUrl: 'https://api.sportypay.eu' // Optionnel
 );
 ```
 

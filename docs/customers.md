@@ -75,7 +75,7 @@ Crée un nouveau client.
 ### Exemple
 
 ```bash
-curl -X POST https://api.sportyneo.com/api/v1/customers \
+curl -X POST https://api.sportypay.eu/api/v1/customers \
   -H 'Authorization: Basic cGFydC4uLg==' \
   -H 'Sportyneo-Entity-Id: 1' \
   -H 'Content-Type: application/json' \
