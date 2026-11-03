@@ -1,6 +1,6 @@
 # sdk-sportypay-php
 
-PHP client for the SportyPay API. Composer package `sportyneo/php-sdk`. PHP `^8.2`. No development dependencies, test suite, or CI config are committed.
+PHP client for the SPORTYpay API. Composer package `sportyneo/php-sdk`. PHP `^8.2`. No development dependencies, test suite, or CI config are committed.
 
 ## Source
 

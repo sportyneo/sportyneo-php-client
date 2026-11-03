@@ -3,7 +3,7 @@
 namespace Sportyneo\SDK\Contracts;
 
 /**
- * Catalogue des institutions de remise supportées par la plateforme Sportyneo.
+ * Catalogue des institutions de remise supportées par la plateforme SPORTYpay.
  *
  * Chaque case représente une institution avec son slug unique, sa portée géographique,
  * et indique si elle nécessite un handler API dédié côté serveur.

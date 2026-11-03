@@ -1,6 +1,6 @@
 {
   "name": "sportyneo/php-sdk",
-  "description": "SDK PHP Sportyneo",
+  "description": "SDK PHP SPORTYpay",
   "autoload": {
     "psr-4": {
       "Sportyneo\\SDK\\": "src/"

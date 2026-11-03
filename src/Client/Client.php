@@ -17,7 +17,7 @@ use Sportyneo\SDK\Resources\StatisticResource;
 use Sportyneo\SDK\Resources\ShopStatResource;
 
 /**
- * Sportyneo API SDK Client
+ * SPORTYpay API SDK Client
  *
  * @version 1.0.0
  * @author Sportyneo

@@ -1,4 +1,4 @@
-# Documentation API SportyNeo
+# Documentation API SPORTYpay
 
 Version 2.0 — Mai 2026
 

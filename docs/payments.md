@@ -2,7 +2,7 @@
 
 > **Pré-requis :** [Authentification](basic-usage.md#authentification) — [Énumérations](configuration.md)
 
-Les sessions de paiement permettent de générer un lien de paiement sécurisé à transmettre à votre client. Ce lien redirige vers la page de paiement SportyNeo où le client pourra choisir son mode de paiement et son échéancier.
+Les sessions de paiement permettent de générer un lien de paiement sécurisé à transmettre à votre client. Ce lien redirige vers la page de paiement SPORTYpay où le client pourra choisir son mode de paiement et son échéancier.
 
 ---
 
@@ -154,11 +154,11 @@ Le champ optionnel `allowed_payment_methods` restreint les modes de paiement pro
 1. POST /v1/payments           → Vous créez une session de paiement
 2. Réponse : payment_url       → Vous recevez un lien de paiement + token
 3. Redirection client          → Vous redirigez le client vers payment_url
-4. Page SportyNeo              → Le client choisit mode de paiement + échéancier
+4. Page SPORTYpay              → Le client choisit mode de paiement + échéancier
 5a. Succès                     → Le client est redirigé vers return_url
 5b. Échec                      → Le client est redirigé vers error_url
 5c. Abandon                    → Le client est redirigé vers back_url
-6. Commande créée              → La commande est créée automatiquement côté SportyNeo
+6. Commande créée              → La commande est créée automatiquement côté SPORTYpay
 7. GET /v1/orders              → Vous vérifiez le statut de la commande
 ```
 
@@ -184,7 +184,7 @@ Lors de la création d'une session, les frais sont calculés automatiquement :
 
 | Élément | Description |
 |---------|-------------|
-| `serviceFees` | Frais fixes liés au service SportyNeo |
+| `serviceFees` | Frais fixes liés au service SPORTYpay |
 | `financialFees` | Frais liés à l'échéancier choisi |
 | `totalFees` | `serviceFees` + `financialFees` |
 | `schedule` | Tableau des montants de chaque échéance (centimes) |

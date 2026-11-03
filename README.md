@@ -1,6 +1,6 @@
-# Sportyneo PHP SDK
+# SPORTYpay PHP SDK
 
-SDK PHP natif pour l'API Sportyneo - Gestion des entités, clubs, clients, commandes et statistiques.
+SDK PHP natif pour l'API SPORTYpay - Gestion des entités, clubs, clients, commandes et statistiques.
 
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D7.4-blue)](https://www.php.net/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)

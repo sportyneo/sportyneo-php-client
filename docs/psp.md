@@ -2,7 +2,7 @@
 
 > **Pré-requis :** [Authentification](basic-usage.md#authentification) — Le shop doit exister avant de démarrer l'onboarding.
 
-L'onboarding PSP permet à un shop de recevoir des virements via Ryft (le prestataire de paiement de Sportyneo). Le processus complet se déroule en plusieurs étapes : création du sub-account, upload de documents KYB, soumission des personnes (bénéficiaires effectifs / représentants légaux), puis ajout d'un RIB.
+L'onboarding PSP permet à un shop de recevoir des virements via Ryft (le prestataire de paiement de SPORTYpay). Le processus complet se déroule en plusieurs étapes : création du sub-account, upload de documents KYB, soumission des personnes (bénéficiaires effectifs / représentants légaux), puis ajout d'un RIB.
 
 ---
 
