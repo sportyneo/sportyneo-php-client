@@ -8,7 +8,7 @@ Cette API REST permet de gérer les entités, clubs, clients, commandes, session
 
 **URL de base :** `https://<domaine>/api/v1`
 
-> **Changement d'URL de l'API.** L'API SportyPay est désormais servie sur les domaines `sportypay.eu`. Les anciens domaines `sportyneo.com` restent actifs pendant la migration, mais toute nouvelle intégration doit utiliser les nouvelles URL. Les intégrations existantes doivent remplacer leur URL de base dès que possible : la date de fin des anciens domaines sera communiquée à l'avance.
+> **Changement d'URL de l'API.** L'API SPORTYpay est désormais servie sur les domaines `sportypay.eu`. Les anciens domaines `sportyneo.com` restent actifs pendant la migration, mais toute nouvelle intégration doit utiliser les nouvelles URL. Les intégrations existantes doivent remplacer leur URL de base dès que possible : la date de fin des anciens domaines sera communiquée à l'avance.
 >
 > | Environnement | URL | Ancienne URL (dépréciée) |
 > |---------------|-----|--------------------------|
